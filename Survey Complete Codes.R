@@ -3,12 +3,10 @@ library(ggplot2)
 library(readr)
 library(tibble)
 
-generativeAI <- read_csv("C:/R Codes/The Use of Generative AI for Students.csv")
+generativeAI <- read_csv("The Use of Generative AI for Students.csv")
 as_tibble(generativeAI)
 
 generativeAI2 <- generativeAI
-
-generativeAI2 <- generativeAI[,-5] #remove not useful column 
 
 View(generativeAI2)
 
@@ -42,6 +40,7 @@ factor_frequency_use <- as.integer(factor_frequency_use)
 
 
 
+#performance expectancy 
 perf_expect_cols <- generativeAI2[, 9:12]
 mean_expect_cols <- colMeans(perf_expect_cols)
 perf_expect_cols <- as.data.frame(mean_expect_cols)
@@ -55,18 +54,17 @@ View(perf_expect_cols)
 
 
 #Read the CSV
-survey <- read.csv("C:/R Codes/The Use of Generative AI for Students.csv")
-surveyQ <- read.csv("C:/R Codes/The Use of Generative AI for Students.csv", header = FALSE)
-surveyQ <- surveyQ[-5]
+survey <- read.csv("The Use of Generative AI for Students.csv")
+surveyQ <- read.csv("The Use of Generative AI for Students.csv", header = FALSE)
+
 View(surveyQ)
 View(survey)
 
-survey <- survey[-5]
+
 
 View(survey)
 #Make it a table
 surveyDF <- as_tibble(survey)
-
 
 
 
@@ -136,10 +134,6 @@ colnames(surveySI)[1] <- "Facilitating Conditions"
 View(surveySI)
 
 
-
-
-
-
 #Facilitating Conditions Range
 surveyFCOG<- surveyDF[25:28]
 view(surveyFCOG)
@@ -161,9 +155,9 @@ colnames(surveyFC)[1] <- "Facilitating Conditions"
 View(surveyFC)
 
 
-
 #Usage Range
-surveyBIOG <- surveyDF[37:39]
+#Usage Range
+surveyBIOG <- surveyDF[26:39]
 View(surveyBIOG)
 
 #Calculate the mean of each Column
@@ -175,9 +169,9 @@ surveyBI <- tibble(surveyBI)
 surveyBI <- mutate(surveyBI, SD = sapply(surveyBIOG , sd))
 View(surveyBI)
 colnames(surveyBI)[1] <- "Mean"
-labelBI <- as.vector(unlist(surveyQ[1, 37:39]))
+labelBI <- as.vector(unlist(surveyQ[1, 26:39]))
 surveyBI <- cbind(labelBI, surveyBI)
-colnames(surveyBI)[1] <- "Behavioral Intention"
+colnames(surveyBI)[1] <- "Usage"
 
 View(surveyBI)
 
@@ -203,4 +197,8 @@ colnames(surveyALL)[1] <- "Whole Survey"
 
 #View the table
 View(surveyALL)
+
+
+
+
 
