@@ -198,6 +198,80 @@ colnames(surveyALL)[1] <- "Whole Survey"
 #View the table
 View(surveyALL)
 
+# Create a table with the count of each level in the 'Sex' column
+sex_counts <- table(survey$Sex)
+
+# Convert the table to a data frame for plotting
+sex_df <- as.data.frame(sex_counts)
+colnames(sex_df) <- c("Sex", "Count")
+
+# Pie chart for 'Sex'
+ggplot(sex_df, aes(x = "", y = Count, fill = Sex)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar("y", start = 0) +
+  scale_fill_manual(values = c("pink", "blue"))+
+  geom_text(aes(label = Count), position = position_stack(vjust = 0.5)) + # Display only counts
+  theme_void() +
+  labs(title = "Sexes of Participants", x = NULL, y = NULL) +
+  theme(legend.title = element_blank())
+
+# Plot for Age
+ggplot(survey, aes(x = "", y = ..count.., fill = Age)) +
+  geom_bar(stat = "count", width = 1) +
+  coord_polar("y", start = 0) +
+  scale_fill_manual(values = c("peru"))+
+  geom_text(aes(label = ..count..), stat = "count", position = position_stack(vjust = 0.5)) + # Display only counts
+  theme_void() +
+  labs(title = "Age Median", x = NULL, y = NULL) +
+  theme(legend.title = element_blank())
+
+#Plot for Educational Level
+ggplot(survey, aes(x = "", y = ..count.., fill = EducationLVL)) +
+  geom_bar(stat = "count", width = 1) +
+  coord_polar("y", start = 0) +
+  scale_fill_manual(values = c("orange", "yellow","green"))+
+  geom_text(aes(label = ..count..), stat = "count", position = position_stack(vjust = 0.5)) + # Display only counts
+  theme_void() +
+  labs(title = "Educational Level of Participants", x = NULL, y = NULL) +
+  theme(legend.title = element_blank())
+
+# Converting Familiarity with AI Technology to a factor variable 
+survey$Familiarity.with.AI.Technology <- as.factor(survey$Familiarity.with.AI.Technology)
+
+# Pie chart for Familiarity with AI Technology
+ggplot(survey, aes(x = "", y = ..count.., fill = `Familiarity.with.AI.Technology`)) +
+  geom_bar(stat = "count", width = 1) +
+  coord_polar("y", start = 0) +
+  geom_text(aes(label = ..count..), stat = "count", position = position_stack(vjust = 0.5)) + # Display only counts
+  theme_void() +
+  labs(title = "Participant's Familiarity with AI Technology", x = NULL, y = NULL) +
+  theme(legend.title = element_blank())
+
+# Converting Have you used Generative AI Technology Before?  to a factor variable
+survey$`Have.you.used.Generative.AI.technology.before.` <- as.factor(survey$`Have.you.used.Generative.AI.technology.before.`)
+
+# Pie chart for Have you used Generative AI Technology Before? 
+ggplot(survey, aes(x = "", y = ..count.., fill = `Have.you.used.Generative.AI.technology.before.`)) +
+  geom_bar(stat = "count", width = 1) +
+  coord_polar("y", start = 0) +
+  geom_text(aes(label = ..count..), stat = "count", position = position_stack(vjust = 0.5)) + 
+  scale_fill_manual(values = c("wheat", "cyan")) + 
+  theme_void() +
+  labs(title = "Participant's Usage of Generative AI Technology", x = NULL, y = NULL) +
+  theme(legend.title = element_blank())
+
+# Converting How often do you use generative AI?  to a factor variable
+survey$`How.often.do.you.use.generative.AI.` <- as.factor(survey$`How.often.do.you.use.generative.AI.`)
+
+# Pie chart for How often do you use generative AI? 
+ggplot(survey, aes(x = "", y = ..count.., fill = `How.often.do.you.use.generative.AI.`)) +
+  geom_bar(stat = "count", width = 1) +
+  coord_polar("y", start = 0) +
+  geom_text(aes(label = ..count..), stat = "count", position = position_stack(vjust = 0.5)) + 
+  scale_fill_manual(values = c("coral", "darkseagreen", "beige", "khaki")) + 
+  theme_void() +
+  labs(title = "Participant's of Usage Frequency of Generative AI", x = NULL, y = NULL) +
+  theme(legend.title= element_blank())
 
 
 
