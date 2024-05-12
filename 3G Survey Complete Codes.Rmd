@@ -15,6 +15,7 @@ library(ggplot2)
 library(readr)
 library(tibble)
 
+
 ```
 
 ## Including Plots
@@ -26,13 +27,17 @@ as_tibble(generativeAI)
 
 generativeAI2 <- generativeAI
 
+View(generativeAI2)
+
 #factor sex
-factor_sex <- factor(generativeAI2$Sex, levels = c("Male", "Female")) 
+factor_sex <- factor(generativeAI2$Sex, levels = c("Male", "Female"))
 factor_sex <- as.integer(factor_sex)
+
 
 #factor age
 factor_age <- factor(generativeAI2$`Age:`, levels = c("Under 18", "18-24", "25-34", "35 and above"))
 factor_age <- as.integer(factor_age)
+
 
 #factor educational level
 factor_educ_level <- factor(generativeAI2$`Education level:`, levels = c("High school or lower",
@@ -61,7 +66,8 @@ factor_frequency_use <- as.integer(factor_frequency_use)
 survey <- read.csv("The Use of Generative AI for Students.csv")
 surveyQ <- read.csv("The Use of Generative AI for Students.csv", header = FALSE)
 surveyDF <- as_tibble(survey)
-#performance expectancy 
+#performance expectancy
+
 surveyPEOG <- surveyDF[9:12]
 
 #Calculate the mean of each Column
@@ -86,7 +92,7 @@ for(i in 1:length(surveyPEOG)){
 labelPE
 
 surveyPE <- cbind(labelPE, surveyPE)
-colnames(surveyEA)[1] <- "Performance Expectancy"
+colnames(surveyPE)[1] <- "Performance Expectancy"
 
 
 ```
@@ -126,11 +132,10 @@ surveyEA <- cbind(labelEA, surveyEA)
 colnames(surveyEA)[1] <- "Effort Expectancy"
 
 
-
 ```
 
 ```{r Attitude Towards Technology}
-#Attitude toward using technology
+##Attitude toward using technology
 surveyATOG <- surveyDF[17:20]
 
 #Calculate the mean of each Column
@@ -147,16 +152,9 @@ labelAT <- c()
 for(i in 1:length(surveyATOG)){
   labelAT[i] <- paste0("AT", i)
 }
-
-labelAT
-
-
-
 surveyAT <- cbind(labelAT, surveyAT)
 colnames(surveyAT)[1] <- "Attitude Towards Using Technology"
 
-#View the table
-View(surveyAT)
 
 
 ```
@@ -187,6 +185,7 @@ labelSI
 
 surveySI <- cbind(labelSI, surveySI)
 colnames(surveySI)[1] <- "Social Influence"
+
 ```
 
 ```{r Facilitating Conditions}
@@ -216,8 +215,9 @@ colnames(surveyFC)[1] <- "Facilitating Conditions"
 
 ```{r Behavioral Intentions}
 #Usage Range
+
 surveyBIOG <- surveyDF[26:39]
-View(surveyBIOG)
+
 
 #Calculate the mean of each Column
 surveyBI <- colMeans(surveyBIOG)
@@ -237,29 +237,10 @@ labelBI
 surveyBI <- cbind(labelBI, surveyBI)
 colnames(surveyBI)[1] <- "Usage"
 
-View(surveyBI)
-
 ```
 
-```{r Whole Survey Data}
-#Whole Survey
-
-surveyALLOG <- surveyDF[9:39]
 
 
-#Calculate the mean of each Column
-surveyALL <- colMeans(surveyALLOG)
-surveyALL <- tibble(surveyALL)
-
-#Calculate SD of each column
-surveyALL <- mutate(surveyALL, SD = sapply(surveyALLOG, sd))
-
-#Renaming the Columns
-colnames(surveyALL) <- c("Mean", "SD")
-labelALL <- as.vector(unlist(surveyQ[1, 9:39]))
-surveyALL <- cbind(labelALL, surveyALL)
-colnames(surveyALL)[1] <- "Whole Survey"
-```
 ```{r whole survey}
 #Whole Survey
 
@@ -294,6 +275,14 @@ whole_df
 
 
 ```{r sex pie chart}
+# Create a table with the count of each level in the 'Sex' column
+sex_counts <- table(survey$Sex)
+
+# Convert the table to a data frame for plotting
+sex_df <- as.data.frame(sex_counts)
+colnames(sex_df) <- c("Sex", "Count")
+
+
 # Pie chart for 'Sex'
 ggplot(sex_df, aes(x = "", y = Count, fill = Sex)) +
   geom_bar(stat = "identity", width = 1) +
@@ -312,15 +301,20 @@ cat("More males use Generative AI than females")
 
 
 ```{r age demographic plot}
-#Scatter plot for Age Demographic
-survey_counts <- survey %>%
-  group_by(Age.) %>%
-  summarise(count = n())
-ggplot(survey_counts, aes(x = Age., y = count)) +
-  geom_point() +
-  labs(title = "Age Median of Pariticipants", x = "Age", y = "Number of Participants") +
-  theme_minimal()
-cat("Most of the users are ages between 18-24. The least amount of users was of the age group 25-34")
+#Bar plot for Educational Level
+survey %>%
+  group_by(Education.level.) %>%
+  summarise(count = n()) %>%
+  ggplot(aes(x = Education.level., y = count, fill = Education.level.)) +
+  geom_bar(stat = "identity", width = 0.7) +
+  scale_fill_manual(values = c("orange", "yellow","green","lightblue"))+
+  geom_text(aes(label = count), vjust = -0.3) + # Display counts on top of the bars
+  theme_void() +
+  labs(title = "Educational Level of Participants", x = NULL, y = NULL) +
+  theme(legend.title = element_blank())
+
+cat("Most of the users are currently in college or in vocational training. 
+    And the least number of users ")
 ```
 
 ```{r plot for educational level}
@@ -358,9 +352,27 @@ ggplot(familiarity_counts, aes(x = "", y = percentage, fill = `Familiarity.with.
   labs(title = "Participant's Familiarity with AI Technology", x = NULL, y = NULL) +
   theme(legend.title = element_blank())
 cat("The pie graph shows that 76 percent of the users are familiar with using AI techbology")
+
 ```
 
 ```{r plot usage of generative AI}
+# Converting How often do you use generative AI?  to a factor variable
+survey$`How.often.do.you.use.generative.AI.` <- as.factor(survey$`How.often.do.you.use.generative.AI.`)
+
+# histogram for How often do you use generative AI? 
+ggplot(survey, aes(x = `How.often.do.you.use.generative.AI.`)) +
+  geom_bar(fill = "lightblue", color = "black") +
+  geom_text(stat = "count", aes(label = paste0(..count..)), vjust = -0.5, size = 3, color = "black") +
+  labs(title = "Participant's Usage Frequency of Generative AI",
+       x = "Usage Frequency",
+       y = "Count") +
+  theme_minimal()
+cat("Most users use generative AI is Several times a week with 21 respondents,
+    and the least is frequency is once a day with 2 respondents")
+```
+
+
+```{r plot frequency of use of generative AI}
 # Converting Have you used Generative AI Technology Before?  to a factor variable
 survey$`Have.you.used.Generative.AI.technology.before.` <- as.factor(survey$`Have.you.used.Generative.AI.technology.before.`)
 
@@ -375,21 +387,4 @@ ggplot(survey, aes(x = "", y = ..count.., fill = `Have.you.used.Generative.AI.te
   theme(legend.title = element_blank())
 
 cat("The graph shows that majority of the users have used generative AI")
-```
-
-
-```{r plot frequency of use of generative AI}
-# Converting How often do you use generative AI?  to a factor variable
-survey$`How.often.do.you.use.generative.AI.` <- as.factor(survey$`How.often.do.you.use.generative.AI.`)
-
-# histogram for How often do you use generative AI? 
-ggplot(survey, aes(x = `How.often.do.you.use.generative.AI.`)) +
-  geom_bar(fill = "lightblue", color = "black") +
-  geom_text(stat = "count", aes(label = paste0(..count..)), vjust = -0.5, size = 3, color = "black") +
-  labs(title = "Participant's Usage Frequency of Generative AI",
-       x = "Usage Frequency",
-       y = "Count") +
-  theme_minimal()
-cat("Most users use generative AI is Several times a week with 21 respondents,
-    and the least is frequency is once a day with 2 respondents")
 ```

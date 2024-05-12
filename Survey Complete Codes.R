@@ -327,6 +327,9 @@ ggplot(familiarity_counts, aes(x = "", y = percentage, fill = `Familiarity.with.
   labs(title = "Participant's Familiarity with AI Technology", x = NULL, y = NULL) +
   theme(legend.title = element_blank())
 cat("The pie graph shows that 76 percent of the users are familiar with using AI techbology")
+
+
+
 # Converting Have you used Generative AI Technology Before?  to a factor variable
 survey$`Have.you.used.Generative.AI.technology.before.` <- as.factor(survey$`Have.you.used.Generative.AI.technology.before.`)
 
@@ -341,6 +344,8 @@ ggplot(survey, aes(x = "", y = ..count.., fill = `Have.you.used.Generative.AI.te
   theme(legend.title = element_blank())
 
 cat("The graph shows that majority of the users have used generative AI")
+
+
 # Converting How often do you use generative AI?  to a factor variable
 survey$`How.often.do.you.use.generative.AI.` <- as.factor(survey$`How.often.do.you.use.generative.AI.`)
 
