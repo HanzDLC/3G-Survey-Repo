@@ -69,7 +69,7 @@ for(i in 1:length(surveyPEOG)){
 labelPE
 
 surveyPE <- cbind(labelPE, surveyPE)
-colnames(surveyEA)[1] <- "Performance Expectancy"
+colnames(surveyPE)[1] <- "Performance Expectancy"
 
 View(surveyPE)
 
